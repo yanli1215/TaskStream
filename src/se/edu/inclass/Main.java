@@ -8,6 +8,8 @@ import se.edu.inclass.task.TaskNameComparator;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class Main {
 
     private TaskNameComparator taskNameComparator;
@@ -21,11 +23,15 @@ public class Main {
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
 
-        //printDataWithStreams(tasksData);
 
-        //printDeadlinesWithStreams(tasksData);
+        printDeadlineUsingStreams(tasksData);
 
+        printData(filterTasksByString(tasksData, "11"));
+
+        printDataWithStreams(tasksData);
+        
         System.out.println(countDeadlineWithStreams(tasksData));
+
 
     }
 
@@ -41,8 +47,8 @@ public class Main {
 
     private static int countDeadlineWithStreams(ArrayList<Task> tasksData) {
         int count = (int) tasksData.stream()
-                    .filter((t) -> t instanceof Deadline)
-                    .count();
+                .filter((t) -> t instanceof Deadline)
+                .count();
         return count;
     }
 
@@ -52,7 +58,7 @@ public class Main {
         }
     }
 
-    public  static void printDataWithStreams(ArrayList<Task> tasksData) {
+    public static void printDataWithStreams(ArrayList<Task> tasksData) {
         tasksData.stream()
                 .forEach(System.out::println); //using the class form
     }
@@ -65,9 +71,21 @@ public class Main {
         }
     }
 
-    public static void printDeadlinesWithStreams(ArrayList<Task> tasksData) {
+
+    public static void printDeadlineUsingStreams(ArrayList<Task> tasksData) {
         tasksData.stream()
                 .filter((t) -> t instanceof Deadline)
+                .sorted((a, b) -> a.getDescription().toLowerCase().compareTo(b.getDescription().toLowerCase()))
                 .forEach(System.out::println);
     }
+
+    public static ArrayList<Task> filterTasksByString(ArrayList<Task> tasksData, String filterString) {
+        ArrayList<Task> filteredList = (ArrayList<Task>) tasksData.stream()
+                .filter((s) -> s.getDescription().toLowerCase().contains(filterString))
+                .collect(toList());
+
+        return filteredList;
+
+    }
 }
+
