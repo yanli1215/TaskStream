@@ -47,8 +47,8 @@ public class Main {
 
     private static int countDeadlineWithStreams(ArrayList<Task> tasksData) {
         int count = (int) tasksData.stream()
-                .filter((t) -> t instanceof Deadline)
-                .count();
+                    .filter((t) -> t instanceof Deadline) //lambda
+                    .count();
         return count;
     }
 
